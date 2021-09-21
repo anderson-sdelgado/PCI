@@ -23,6 +23,7 @@ public class ItemDAO {
         for (ItemBean itemBeanBD : itemList) {
             if(!idPlanta.equals(itemBeanBD.getIdPlantaItem())){
                 idPlantaList.add(itemBeanBD.getIdPlantaItem());
+                idPlanta = itemBeanBD.getIdPlantaItem();
             }
         }
         return idPlantaList;

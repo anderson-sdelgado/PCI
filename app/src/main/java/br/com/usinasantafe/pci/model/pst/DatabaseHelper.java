@@ -19,7 +19,6 @@ import br.com.usinasantafe.pci.model.bean.variavel.ConfigBean;
 import br.com.usinasantafe.pci.model.bean.variavel.PlantaCabecBean;
 import br.com.usinasantafe.pci.model.bean.variavel.RespItemBean;
 
-
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
 	public static final String FORCA_DB_NAME = "pci_db";

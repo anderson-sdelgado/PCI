@@ -1,7 +1,5 @@
 package br.com.usinasantafe.pci.view;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -36,7 +34,7 @@ public class FuncionarioActivity extends ActivityGeneric {
             @Override
             public void onClick(View v) {
 
-                AlertDialog.Builder alerta = new AlertDialog.Builder(  FuncionarioActivity.this);
+                AlertDialog.Builder alerta = new AlertDialog.Builder(FuncionarioActivity.this);
                 alerta.setTitle("ATENÇÃO");
                 alerta.setMessage("DESEJA REALMENTE ATUALIZAR BASE DE DADOS?");
                 alerta.setNegativeButton("SIM", new DialogInterface.OnClickListener() {
@@ -77,7 +75,6 @@ public class FuncionarioActivity extends ActivityGeneric {
                 alerta.setPositiveButton("NÃO", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                     }
                 });
 
@@ -98,20 +95,14 @@ public class FuncionarioActivity extends ActivityGeneric {
 
                     if(pciContext.getCheckListCTR().verFunc(matricFunc)){
 
-                        FuncBean funcBean = pciContext.getCheckListCTR().getFunc(matricFunc);
-
-                        pciContext.getCheckListCTR().setCabecBean(new CabecBean());
-                        pciContext.getCheckListCTR().getCabecBean().setIdFuncCabec(funcBean.getIdFunc());
-                        pciContext.getCheckListCTR().getCabecBean().setIdOficSecaoCabec(funcBean.getIdOficSecaoFunc());
+                        pciContext.getCheckListCTR().setIniciarCabec(matricFunc);
 
                         progressBar = new ProgressDialog(v.getContext());
                         progressBar.setCancelable(true);
                         progressBar.setMessage("Pequisando a OS...");
                         progressBar.show();
 
-                        pciContext.getCheckListCTR().verOS(funcBean.getIdOficSecaoFunc().toString()
-                                ,  FuncionarioActivity.this, ListaOSActivity.class, progressBar);
-
+                        pciContext.getCheckListCTR().verOS(FuncionarioActivity.this, ListaOSActivity.class, progressBar);
 
                     }
                     else{

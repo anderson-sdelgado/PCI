@@ -32,15 +32,15 @@ public class FuncDAO {
     }
 
     public FuncBean getMatricFunc(Long matricFunc){
-        List funcList = matricFuncList(matricFunc);
-        FuncBean funcBean = (FuncBean) funcList.get(0);
+        List<FuncBean> funcList = matricFuncList(matricFunc);
+        FuncBean funcBean = funcList.get(0);
         funcList.clear();
         return funcBean;
     }
 
     public FuncBean getIdFunc(Long idFunc){
-        List funcList = idFuncList(idFunc);
-        FuncBean funcBean = (FuncBean) funcList.get(0);
+        List<FuncBean> funcList = idFuncList(idFunc);
+        FuncBean funcBean = funcList.get(0);
         funcList.clear();
         return funcBean;
     }

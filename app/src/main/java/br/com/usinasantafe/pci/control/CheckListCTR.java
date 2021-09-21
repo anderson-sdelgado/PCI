@@ -403,6 +403,12 @@ public class CheckListCTR {
 
     ////////////////////////////// SETAR CAMPOS //////////////////////////////////////////////////
 
+    public void setIniciarCabec(Long matricFunc){
+        this.cabecBean = new CabecBean();
+        this.cabecBean.setIdFuncCabec(getFunc(matricFunc).getIdFunc());
+        this.cabecBean.setIdOficSecaoCabec(getFunc(matricFunc).getIdOficSecaoFunc());
+    }
+
     public void setCabecBean(CabecBean cabecBean) {
         this.cabecBean = cabecBean;
     }
@@ -415,9 +421,9 @@ public class CheckListCTR {
 
     //////////////////////// VERIFICAÇÃO E ATUALIZAÇÃO DE DADOS POR SERVIDOR ///////////////////////
 
-    public void verOS(String dado, Context telaAtual, Class telaProx, ProgressDialog progressDialog){
+    public void verOS(Context telaAtual, Class telaProx, ProgressDialog progressDialog){
         OSDAO osDAO = new OSDAO();
-        osDAO.verOS(dado, telaAtual, telaProx, progressDialog);
+        osDAO.verOS(this.cabecBean.getIdOficSecaoCabec().toString(), telaAtual, telaProx, progressDialog);
     }
 
     public void atualDadosFunc(Context telaAtual, Class telaProx, ProgressDialog progressDialog){
