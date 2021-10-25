@@ -25,6 +25,13 @@
         android:layout_weight="1" />
 
     <Button
+        android:id="@+id/buttonAtualOS"
+        style="@style/BotaoAvulso"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/texto_atualizar_dados" />
+
+    <Button
         android:id="@+id/buttonRetOS"
         style="@style/BotaoAvulso"
         android:layout_width="match_parent"

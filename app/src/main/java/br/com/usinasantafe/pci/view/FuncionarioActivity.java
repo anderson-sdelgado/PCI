@@ -96,13 +96,9 @@ public class FuncionarioActivity extends ActivityGeneric {
                     if(pciContext.getCheckListCTR().verFunc(matricFunc)){
 
                         pciContext.getCheckListCTR().setIniciarCabec(matricFunc);
-
-                        progressBar = new ProgressDialog(v.getContext());
-                        progressBar.setCancelable(true);
-                        progressBar.setMessage("Pequisando a OS...");
-                        progressBar.show();
-
-                        pciContext.getCheckListCTR().verOS(FuncionarioActivity.this, ListaOSActivity.class, progressBar);
+                        Intent it = new Intent(FuncionarioActivity.this, ListaOSActivity.class);
+                        startActivity(it);
+                        finish();
 
                     }
                     else{

@@ -1,7 +1,5 @@
 package br.com.usinasantafe.pci.view;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -21,6 +19,7 @@ import br.com.usinasantafe.pci.model.bean.estatica.FuncBean;
 import br.com.usinasantafe.pci.model.bean.estatica.OSBean;
 import br.com.usinasantafe.pci.model.bean.variavel.PlantaCabecBean;
 import br.com.usinasantafe.pci.util.EnvioDadosServ;
+import br.com.usinasantafe.pci.util.VerifDadosServ;
 
 public class ListaPlantaActivity extends ActivityGeneric {
 
@@ -38,7 +37,8 @@ public class ListaPlantaActivity extends ActivityGeneric {
         ListView listPlantaCL = findViewById(R.id.listPlantaCL);
         Button buttonEnviarChecklist = findViewById(R.id.buttonEnviarChecklist);
         Button buttonExcluirChecklist = findViewById(R.id.buttonExcluirChecklist);
-        Button buttonRetornarChecklist = findViewById(R.id.buttonRetornarChecklist);
+        Button buttonRetornarChecklist = findViewById(R.id.buttonRetornarPlanta);
+        Button buttonAtualPlanta = findViewById(R.id.buttonAtualPlanta);
 
         pciContext = (PCIContext) getApplication();
 
@@ -139,6 +139,22 @@ public class ListaPlantaActivity extends ActivityGeneric {
             }
         });
 
+        buttonAtualPlanta.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                progressBar = new ProgressDialog(v.getContext());
+                progressBar.setCancelable(true);
+                progressBar.setMessage("Pequisando Item...");
+                progressBar.show();
+
+                VerifDadosServ.getInstance().verDados(pciContext.getCheckListCTR().getOS().getIdOS().toString(), "Item"
+                        ,   ListaPlantaActivity.this, ListaPlantaActivity.class, progressBar);
+
+            }
+        });
+
         buttonRetornarChecklist.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -148,6 +164,8 @@ public class ListaPlantaActivity extends ActivityGeneric {
                 finish();
             }
         });
+
+
 
     }
 

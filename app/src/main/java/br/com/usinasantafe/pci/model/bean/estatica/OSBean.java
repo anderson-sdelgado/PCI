@@ -23,6 +23,8 @@ public class OSBean extends Entidade {
     private Long qtdeDiaOS;
     @DatabaseField
     private String descrPeriodo;
+    @DatabaseField
+    private String dthrPrevTerm;
 
     public OSBean() {
     }
@@ -65,5 +67,13 @@ public class OSBean extends Entidade {
 
     public void setDescrPeriodo(String descrPeriodo) {
         this.descrPeriodo = descrPeriodo;
+    }
+
+    public String getDthrPrevTerm() {
+        return dthrPrevTerm;
+    }
+
+    public void setDthrPrevTerm(String dthrPrevTerm) {
+        this.dthrPrevTerm = dthrPrevTerm;
     }
 }

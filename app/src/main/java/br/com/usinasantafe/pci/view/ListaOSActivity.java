@@ -28,20 +28,9 @@ public class ListaOSActivity extends ActivityGeneric {
 
         ListView listViewOS = findViewById(R.id.listViewOS);
         Button buttonRetOS = findViewById(R.id.buttonRetOS);
+        Button buttonAtualOS = findViewById(R.id.buttonAtualOS);
 
         pciContext = (PCIContext) getApplication();
-
-        if(pciContext.getCheckListCTR().verPlanta()){
-
-            progressBar = new ProgressDialog(ListaOSActivity.this);
-            progressBar.setCancelable(true);
-            progressBar.setMessage("Atualizando Plantas...");
-            progressBar.show();
-
-            pciContext.getCheckListCTR().atualDadosPlanta(ListaOSActivity.this, ListaOSActivity.class, progressBar);
-
-        }
-
         osCabList = pciContext.getCheckListCTR().osList();
 
         AdapterListOS adapterListOS = new AdapterListOS(this, osCabList);
@@ -68,6 +57,20 @@ public class ListaOSActivity extends ActivityGeneric {
             }
 
         });
+
+        buttonAtualOS.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                progressBar = new ProgressDialog(v.getContext());
+                progressBar.setCancelable(true);
+                progressBar.setMessage("Pequisando a OS...");
+                progressBar.show();
+
+                pciContext.getCheckListCTR().verOS(ListaOSActivity.this, ListaOSActivity.class, progressBar);
+            }
+        });
+
 
         buttonRetOS.setOnClickListener(new View.OnClickListener() {
 

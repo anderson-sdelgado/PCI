@@ -64,6 +64,7 @@ public class MenuInicialActivity extends ActivityGeneric {
 
         }
 
+        pciContext.getCheckListCTR().deleteOS();
         pciContext.getCheckListCTR().deleteCabecResp();
         pciContext.getCheckListCTR().updStatusApont();
 

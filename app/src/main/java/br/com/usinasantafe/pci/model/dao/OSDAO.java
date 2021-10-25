@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.usinasantafe.pci.model.bean.estatica.OSBean;
+import br.com.usinasantafe.pci.util.Tempo;
 import br.com.usinasantafe.pci.util.VerifDadosServ;
 
 public class OSDAO {
@@ -90,5 +91,15 @@ public class OSDAO {
         }
 
     }
+
+    public void deleteOS(){
+        List<OSBean> osList = osList();
+        for(OSBean osBean : osList){
+            if(Tempo.getInstance().dthrStringToLong(osBean.getDthrPrevTerm()) < Tempo.getInstance().dthrStringToLong(Tempo.getInstance().dataCHora())){
+                osBean.delete();
+            }
+        }
+    }
+
 
 }

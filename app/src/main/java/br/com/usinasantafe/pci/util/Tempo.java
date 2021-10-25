@@ -207,6 +207,39 @@ public class Tempo {
 
     }
 
+    public Long dthrStringToLong(String dthrString){
+        return dthrStringToCalendar(dthrString).getTimeInMillis();
+    }
+
+    public Calendar dthrStringToCalendar(String dthrString){
+
+        Calendar calendar = Calendar.getInstance();
+
+        try {
+
+            String diaStr = dthrString.substring(0, 2);
+            String mesStr = dthrString.substring(3, 5);
+            String anoStr = dthrString.substring(6, 10);
+            String horaStr = dthrString.substring(11, 13);
+            String minutoStr = dthrString.substring(14, 16);
+
+            calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(diaStr));
+            calendar.set(Calendar.MONTH, Integer.parseInt(mesStr) - 1);
+            calendar.set(Calendar.YEAR, Integer.parseInt(anoStr));
+            calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(horaStr));
+            calendar.set(Calendar.MINUTE, Integer.parseInt(minutoStr));
+            calendar.set(Calendar.SECOND, 59);
+            calendar.set(Calendar.MILLISECOND, 9999);
+
+        }
+        catch (Exception e) {
+        }
+
+        return calendar;
+
+    }
+
+
 	public boolean isEnvioDado() {
 		return envioDado;
 	}

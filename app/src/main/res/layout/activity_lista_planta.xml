@@ -57,7 +57,14 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/buttonRetornarChecklist"
+        android:id="@+id/buttonAtualPlanta"
+        style="@style/BotaoAvulso"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/texto_atualizar_dados" />
+
+    <Button
+        android:id="@+id/buttonRetornarPlanta"
         style="@style/BotaoAvulso"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
