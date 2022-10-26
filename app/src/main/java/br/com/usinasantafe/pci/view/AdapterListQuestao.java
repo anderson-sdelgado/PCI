@@ -16,10 +16,6 @@ import br.com.usinasantafe.pci.model.bean.estatica.ItemBean;
 import br.com.usinasantafe.pci.model.dao.ComponenteDAO;
 import br.com.usinasantafe.pci.model.dao.ServicoDAO;
 
-/**
- * Created by anderson on 08/03/2018.
- */
-
 public class AdapterListQuestao extends BaseAdapter {
 
     private List itens;
@@ -49,9 +45,9 @@ public class AdapterListQuestao extends BaseAdapter {
     public View getView(int position, View view, ViewGroup parent) {
 
         view = layoutInflater.inflate(R.layout.activity_item_questao, null);
-        TextView textViewPosQuestao = (TextView) view.findViewById(R.id.textViewPosQuestao);
-        TextView textViewDescrQuestao = (TextView) view.findViewById(R.id.textViewDescrQuestao);
-        TextView textViewStatusQuestao = (TextView) view.findViewById(R.id.textViewStatusQuestao);
+        TextView textViewPosQuestao = view.findViewById(R.id.textViewPosQuestao);
+        TextView textViewDescrQuestao = view.findViewById(R.id.textViewDescrQuestao);
+        TextView textViewStatusQuestao = view.findViewById(R.id.textViewStatusQuestao);
 
         ItemBean itemBean = (ItemBean) itens.get(position);
         textViewPosQuestao.setText("QUESTÃO " + itemBean.getSeqItem());

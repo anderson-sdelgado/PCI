@@ -1,6 +1,5 @@
 package br.com.usinasantafe.pci.view;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -21,6 +20,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import br.com.usinasantafe.pci.BuildConfig;
 import br.com.usinasantafe.pci.PCIContext;
 import br.com.usinasantafe.pci.R;
 import br.com.usinasantafe.pci.ReceberAlarme;
@@ -39,6 +39,9 @@ public class MenuInicialActivity extends ActivityGeneric {
 
         pciContext = (PCIContext) getApplication();
         textViewProcesso = findViewById(R.id.textViewProcesso);
+        TextView textViewPrincipal = findViewById(R.id.textViewPrincipal);
+
+        textViewPrincipal.setText("PRINCIPAL - V " + BuildConfig.VERSION_NAME);
 
         if(!checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
             String[] PERMISSIONS = {android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -56,7 +59,7 @@ public class MenuInicialActivity extends ActivityGeneric {
                 progressBar.setCancelable(true);
                 progressBar.setMessage("Buscando Atualização...");
                 progressBar.show();
-                pciContext.getConfigCTR().verAtualAplic(pciContext.versaoAplic, this, progressBar);
+                pciContext.getConfigCTR().verAtualAplic(pciContext.versaoApp, this, progressBar);
             }
             else{
                 progressBar.dismiss();

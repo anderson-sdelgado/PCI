@@ -10,8 +10,8 @@ android {
         applicationId "br.com.usinasantafe.pci"
         minSdk 22
         targetSdk 30
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "2.03"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

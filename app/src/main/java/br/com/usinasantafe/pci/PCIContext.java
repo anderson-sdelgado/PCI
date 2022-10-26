@@ -10,16 +10,14 @@ import br.com.usinasantafe.pci.model.bean.estatica.ItemBean;
 import br.com.usinasantafe.pci.model.bean.variavel.CabecBean;
 import br.com.usinasantafe.pci.model.bean.variavel.RespItemBean;
 
-/**
- * Created by anderson on 30/10/2015.
- */
 public class PCIContext extends Application {
 
     private ConfigCTR configCTR;
     private CheckListCTR checkListCTR;
     private Long idFunc;
 
-    public static String versaoAplic = "2.02";
+    public static String versaoApp = "2.02";
+    public static String versaoWS = "2.00";
 
     public PCIContext() {
     }

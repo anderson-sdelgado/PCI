@@ -53,7 +53,7 @@ public class GetBDGenerico extends AsyncTask<String, Void, String> {
                 
             }
             
-            Log.i("ERRO", "Chegou aki = " + url);
+            Log.i("PCI", "URL = " + url);
 
 			URL urlCon = new URL(url);
 			HttpURLConnection connection = (HttpURLConnection) urlCon.openConnection();

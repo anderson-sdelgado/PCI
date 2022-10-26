@@ -49,7 +49,7 @@ public class AtualDadosServ {
 
 			try{
 
-				Log.i("ECM", "RESULT -> " + result);
+				Log.i("PCI", "RESULT -> " + result);
 
 				JSONObject jObj = new JSONObject(result);
 				JSONArray jsonArray = jObj.getJSONArray("dados");
@@ -57,23 +57,18 @@ public class AtualDadosServ {
 				genericRecordable.deleteAll(classe);
 
 				for(int i = 0; i < jsonArray.length(); i++){
-
+					Log.i("PCI", "RODANDO = " + i);
 					JSONObject objeto = jsonArray.getJSONObject(i);
 					Gson gson = new Gson();
 					genericRecordable.insert(gson.fromJson(objeto.toString(), classe), classe);
-
 				}
 
-				Log.i("CLI", "PEGOU DADO ");
-
-				if(contAtualBD > 0){
+				if(contAtualBD > 0) {
 					atualizandoBD();
 				}
 
-			}
-			catch (Exception e) {
-
-			Log.i("ERRO", "Erro Manip = " + e);
+			} catch (Exception e) {
+				Log.i("PCI", "Erro Manip = " + e);
 			}
 
 		}
@@ -96,7 +91,7 @@ public class AtualDadosServ {
 
 	        for (Field field : retClasse.getDeclaredFields()) {
 	            String campo = field.getName();
-	            Log.i("ERRO", "Campo = " + campo);
+	            Log.i("PCI", "Campo = " + campo);
 	            if(campo.contains("Bean")){
 	            	tabAtualArrayList.add(campo);
 	            }
@@ -113,7 +108,7 @@ public class AtualDadosServ {
 	        
 	        
 		} catch (Exception e) {
-			Log.i("ERRO", "Erro Manip2 = " + e);
+			Log.i("PCI", "Erro Manip2 = " + e);
 		}
         
 	}
@@ -132,7 +127,7 @@ public class AtualDadosServ {
 
 			for (Field field : retClasse.getDeclaredFields()) {
 				String campo = field.getName();
-				Log.i("PMM", "Campo = " + campo);
+				Log.i("PCI", "Campo = " + campo);
 				for (int i = 0; i < classeArrayList.size(); i++) {
 					String classe = (String) classeArrayList.get(i);
 					if(campo.equals(classe)){
@@ -149,7 +144,7 @@ public class AtualDadosServ {
 			getBDGenerico.execute(url);
 
 		} catch (Exception e) {
-			Log.i("PMM", "ERRO = " + e);
+			Log.i("PCI", "ERRO = " + e);
 		}
 
 	}
@@ -201,9 +196,7 @@ public class AtualDadosServ {
 				GetBDGenerico getBDGenerico = new GetBDGenerico();
 		        getBDGenerico.execute(url);
 		        
-			}
-			else
-			{
+			} else {
 				contAtualBD = 0;
 			}
 			

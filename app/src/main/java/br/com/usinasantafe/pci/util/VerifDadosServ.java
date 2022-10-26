@@ -264,7 +264,7 @@ public class VerifDadosServ {
         JsonObject json = new JsonObject();
         json.add("dados", jsonArray);
 
-        Log.i("PMM", "LISTA = " + json.toString());
+        Log.i("PMM", "LISTA = " + json);
 
         String[] url = {urlsConexaoHttp.urlVerifica(tipo)};
         Map<String, Object> parametrosPost = new HashMap<String, Object>();
@@ -282,7 +282,7 @@ public class VerifDadosServ {
         Map<String, Object> parametrosPost = new HashMap<String, Object>();
         parametrosPost.put("dado", String.valueOf(dado));
 
-        Log.i("PMM", "VERIFICA = " + String.valueOf(dado));
+        Log.i("PMM", "VERIFICA = " + dado);
 
         postVerGenerico = new PostVerGenerico();
         postVerGenerico.setParametrosPost(parametrosPost);

@@ -33,6 +33,10 @@ public class ListaOSActivity extends ActivityGeneric {
         pciContext = (PCIContext) getApplication();
         osCabList = pciContext.getCheckListCTR().osList();
 
+        if(osCabList.size() == 0){
+            atualizarOS();
+        }
+
         AdapterListOS adapterListOS = new AdapterListOS(this, osCabList);
         listViewOS.setAdapter(adapterListOS);
 
@@ -62,12 +66,7 @@ public class ListaOSActivity extends ActivityGeneric {
 
             @Override
             public void onClick(View v) {
-                progressBar = new ProgressDialog(v.getContext());
-                progressBar.setCancelable(true);
-                progressBar.setMessage("Pequisando a OS...");
-                progressBar.show();
-
-                pciContext.getCheckListCTR().verOS(ListaOSActivity.this, ListaOSActivity.class, progressBar);
+                atualizarOS();
             }
         });
 
@@ -83,6 +82,15 @@ public class ListaOSActivity extends ActivityGeneric {
             }
         });
 
+    }
+
+    private void atualizarOS() {
+        progressBar = new ProgressDialog(this);
+        progressBar.setCancelable(true);
+        progressBar.setMessage("Pequisando a OS...");
+        progressBar.show();
+
+        pciContext.getCheckListCTR().verOS(ListaOSActivity.this, ListaOSActivity.class, progressBar);
     }
 
     public void onBackPressed()  {

@@ -51,8 +51,8 @@ public class AdapterListPlanta extends BaseAdapter {
     public View getView(int position, View view, ViewGroup parent) {
 
         view = layoutInflater.inflate(R.layout.activity_item_planta, null);
-        TextView textViewPlantaCD = (TextView) view.findViewById(R.id.textViewPlantaCD);
-        TextView textViewPlantaDescr = (TextView) view.findViewById(R.id.textViewPlantaDescr);
+        TextView textViewPlantaCD = view.findViewById(R.id.textViewPlantaCD);
+        TextView textViewPlantaDescr = view.findViewById(R.id.textViewPlantaDescr);
 
         PlantaCabecBean plantaCabecBean = (PlantaCabecBean) itens.get(position);
 
