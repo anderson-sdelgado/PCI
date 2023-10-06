@@ -24,8 +24,8 @@ public class ReceberAlarme extends BroadcastReceiver {
 			new DatabaseHelper(context);
 		}
 
-		Log.i("PCI", "DATA HORA = " + Tempo.getInstance().dataCHora());
-		teste();
+//		Log.i("PCI", "DATA HORA = " + Tempo.getInstance().dataCHora());
+//		teste();
 
 	}
 

@@ -6,34 +6,61 @@ package br.com.usinasantafe.pci.model.bean;
 
 public class AtualAplicBean {
 
-    private Long idCelularAtual;
-    private String versaoAtual;
-    private String versaoNova;
+    private Long nroAparelho;
+    private String versao;
+    private String dthr;
+    private String token;
+    private Long idOficSecao;
+    private Long idOS;
 
     public AtualAplicBean() {
     }
 
-    public Long getIdCelularAtual() {
-        return idCelularAtual;
+    public Long getNroAparelho() {
+        return nroAparelho;
     }
 
-    public void setIdCelularAtual(Long idCelularAtual) {
-        this.idCelularAtual = idCelularAtual;
+    public void setNroAparelho(Long nroAparelho) {
+        this.nroAparelho = nroAparelho;
     }
 
-    public String getVersaoAtual() {
-        return versaoAtual;
+    public String getVersao() {
+        return versao;
     }
 
-    public void setVersaoAtual(String versaoAtual) {
-        this.versaoAtual = versaoAtual;
+    public void setVersao(String versao) {
+        this.versao = versao;
     }
 
-    public String getVersaoNova() {
-        return versaoNova;
+    public String getDthr() {
+        return dthr;
     }
 
-    public void setVersaoNova(String versaoNova) {
-        this.versaoNova = versaoNova;
+    public void setDthr(String dthr) {
+        this.dthr = dthr;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public Long getIdOficSecao() {
+        return idOficSecao;
+    }
+
+    public void setIdOficSecao(Long idOficSecao) {
+        this.idOficSecao = idOficSecao;
+    }
+
+    public Long getIdOS() {
+        return idOS;
+    }
+
+    public void setIdOS(Long idOS) {
+        this.idOS = idOS;
     }
 }

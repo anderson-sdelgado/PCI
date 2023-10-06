@@ -37,38 +37,26 @@ public class QuestaoActivity extends ActivityGeneric {
 
         textViewItemQuestao.setText(texto);
 
-        buttonRetQuestao.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent it = new Intent(QuestaoActivity.this, ListaQuestaoActivity.class);
-                startActivity(it);
-                finish();
-            }
+        buttonRetQuestao.setOnClickListener(v -> {
+            Intent it = new Intent(QuestaoActivity.this, ListaQuestaoActivity.class);
+            startActivity(it);
+            finish();
         });
 
-        buttonConforme.setOnClickListener(new View.OnClickListener() {
+        buttonConforme.setOnClickListener(v -> {
 
-            @Override
-            public void onClick(View v) {
+            pciContext.getCheckListCTR().salvarAtualRespItem(2L, "null");
 
-                pciContext.getCheckListCTR().salvarAtualRespItem(2L, "null");
+            Intent it = new Intent(QuestaoActivity.this, ListaQuestaoActivity.class);
+            startActivity(it);
+            finish();
 
-                Intent it = new Intent(QuestaoActivity.this, ListaQuestaoActivity.class);
-                startActivity(it);
-                finish();
-
-            }
         });
 
-        buttonNaoConforme.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent it = new Intent(QuestaoActivity.this, ObsQuestaoActivity.class);
-                startActivity(it);
-                finish();
-            }
+        buttonNaoConforme.setOnClickListener(v -> {
+            Intent it = new Intent(QuestaoActivity.this, ObsQuestaoActivity.class);
+            startActivity(it);
+            finish();
         });
 
     }

@@ -2,13 +2,12 @@ package br.com.usinasantafe.pci.view;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import br.com.usinasantafe.pci.BuildConfig;
 import br.com.usinasantafe.pci.PCIContext;
 import br.com.usinasantafe.pci.R;
 import br.com.usinasantafe.pci.util.ConexaoWeb;
@@ -16,7 +15,7 @@ import br.com.usinasantafe.pci.util.ConexaoWeb;
 public class ConfigActivity extends ActivityGeneric {
 
     private ProgressDialog progressBar;
-    private EditText editTextNLinhaConfig;
+    private EditText editTextNroAparelhoConfig;
     private PCIContext pciContext;
 
     @Override
@@ -26,18 +25,18 @@ public class ConfigActivity extends ActivityGeneric {
 
         pciContext = (PCIContext) getApplication();
 
-        Button btAtualBDConfig = findViewById(R.id.buttonAtualizarDados);
+        Button buttonAtualBDConfig = findViewById(R.id.buttonAtualBDConfig);
         Button buttonCancConfig = findViewById(R.id.buttonCancConfig);
         Button buttonSalvarConfig = findViewById(R.id.buttonSalvarConfig);
-        editTextNLinhaConfig = findViewById(R.id.editTextNLinhaConfig);
+        editTextNroAparelhoConfig = findViewById(R.id.editTextNroAparelhoConfig);
 
         if(pciContext.getConfigCTR().hasElements()) {
-            editTextNLinhaConfig.setText(String.valueOf(pciContext.getConfigCTR().getConfig().getNumLinhaConfig()));
+            editTextNroAparelhoConfig.setText(String.valueOf(pciContext.getConfigCTR().getConfig().getNroAparelhoConfig()));
         }
 
-        btAtualBDConfig.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        buttonAtualBDConfig.setOnClickListener(v -> {
+
+            if(pciContext.getConfigCTR().hasElements()) {
 
                 ConexaoWeb conexaoWeb = new ConexaoWeb();
 
@@ -53,66 +52,57 @@ public class ConfigActivity extends ActivityGeneric {
 
                     pciContext.getConfigCTR().atualTodasTabelas(ConfigActivity.this, progressBar);
 
-                }
-                else{
+                } else {
 
                     AlertDialog.Builder alerta = new AlertDialog.Builder(ConfigActivity.this);
                     alerta.setTitle("ATENÇÃO");
                     alerta.setMessage("FALHA NA CONEXÃO DE DADOS. O CELULAR ESTA SEM SINAL. POR FAVOR, TENTE NOVAMENTE QUANDO O CELULAR ESTIVE COM SINAL.");
 
-                    alerta.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
+                    alerta.setPositiveButton("OK", (dialog, which) -> {
                     });
                     alerta.show();
 
                 }
 
+            } else {
+
+                AlertDialog.Builder alerta = new AlertDialog.Builder(ConfigActivity.this);
+                alerta.setTitle("ATENÇÃO");
+                alerta.setMessage("POR FAVOR, INSIRA O EQUIPAMENTO ANTES DE ATUALIZAR OS DADDOS.");
+                alerta.setPositiveButton("OK", (dialog, which) -> {
+                });
+                alerta.show();
             }
+
         });
 
-        buttonSalvarConfig.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        buttonSalvarConfig.setOnClickListener(v -> {
 
-                if (!editTextNLinhaConfig.getText().toString().equals("")) {
+            if (!editTextNroAparelhoConfig.getText().toString().equals("")) {
 
-                    pciContext.getConfigCTR().salvarConfig(Long.valueOf(editTextNLinhaConfig.getText().toString()));
+                progressBar = new ProgressDialog(v.getContext());
+                progressBar.setCancelable(true);
+                progressBar.setMessage("Pequisando o Equipamento...");
+                progressBar.show();
+                pciContext.getConfigCTR().salvarToken(BuildConfig.VERSION_NAME, Long.valueOf(editTextNroAparelhoConfig.getText().toString()), ConfigActivity.this, TelaInicialActivity.class, progressBar);
 
-                    Intent it = new Intent( ConfigActivity.this, MenuInicialActivity.class);
-                    startActivity(it);
-                    finish();
+            } else {
 
-                }
-                else{
-
-                    AlertDialog.Builder alerta = new AlertDialog.Builder(ConfigActivity.this);
-                    alerta.setTitle("ATENÇÃO");
-                    alerta.setMessage("POR FAVOR! DIGITE O NUMERO DA LINHA.");
-                    alerta.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
-                    });
-                    alerta.show();
-
-                }
+                AlertDialog.Builder alerta = new AlertDialog.Builder(ConfigActivity.this);
+                alerta.setTitle("ATENÇÃO");
+                alerta.setMessage("POR FAVOR! DIGITE O NUMERO DA LINHA.");
+                alerta.setPositiveButton("OK", (dialog, which) -> {
+                });
+                alerta.show();
 
             }
+
         });
 
-        buttonCancConfig.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent it = new Intent(ConfigActivity.this, MenuInicialActivity.class);
-                startActivity(it);
-                finish();
-            }
-
+        buttonCancConfig.setOnClickListener(v -> {
+            Intent it = new Intent(ConfigActivity.this, MenuInicialActivity.class);
+            startActivity(it);
+            finish();
         });
 
     }

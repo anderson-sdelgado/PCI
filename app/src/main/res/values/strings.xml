@@ -54,4 +54,5 @@
     <string name="texto_padrao_salvar">SALVAR</string>
     <string name="texto_atualizar_bd">ATUALIZAR DADOS</string>
     <string name="texto_periodo_os">DIÁRIA</string>
+    <string name="texto_inicio">INICIANDO O APLICATIVO...</string>
 </resources>

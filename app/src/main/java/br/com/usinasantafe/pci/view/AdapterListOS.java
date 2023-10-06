@@ -45,10 +45,10 @@ public class AdapterListOS extends BaseAdapter {
     public View getView(int position, View view, ViewGroup parent) {
 
         view = layoutInflater.inflate(R.layout.activity_item_os, null);
-        TextView textViewNroOS = (TextView) view.findViewById(R.id.textViewNroOS);
-        TextView textViewCdPlanta = (TextView) view.findViewById(R.id.textViewCdPlanta);
-        TextView textViewDescrPlanta = (TextView) view.findViewById(R.id.textViewDescrPlanta);
-        TextView textViewPeriodoOS = (TextView) view.findViewById(R.id.textViewPeriodoOS);
+        TextView textViewNroOS = view.findViewById(R.id.textViewNroOS);
+        TextView textViewCdPlanta = view.findViewById(R.id.textViewCdPlanta);
+        TextView textViewDescrPlanta = view.findViewById(R.id.textViewDescrPlanta);
+        TextView textViewPeriodoOS = view.findViewById(R.id.textViewPeriodoOS);
 
         OSBean osBean = (OSBean) itens.get(position);
 

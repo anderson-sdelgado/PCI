@@ -5,28 +5,37 @@ import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Iterator;
+import java.util.Map;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import br.com.usinasantafe.pci.util.AtualDadosServ;
 
 
-public class GetBDGenerico extends AsyncTask<String, Void, String> {
+public class PostBDGenerico extends AsyncTask<String, Void, String> {
 
-	private static GetBDGenerico instance = null;
+	private static PostBDGenerico instance = null;
+	private Map<String, Object> parametrosPost = null;
 	private String tipo = null;
 	
 	private UrlsConexaoHttp urlsConexaoHttp;
 
 
-	public GetBDGenerico() {
+	public PostBDGenerico() {
 		urlsConexaoHttp = new UrlsConexaoHttp();
 	}
 	
-    public static GetBDGenerico getInstance() {
+    public static PostBDGenerico getInstance() {
         if (instance == null)
-        instance = new GetBDGenerico();
+        instance = new PostBDGenerico();
         return instance;
     }
 
@@ -55,12 +64,23 @@ public class GetBDGenerico extends AsyncTask<String, Void, String> {
             
             Log.i("PCI", "URL = " + url);
 
+			String parametros = getQueryString(parametrosPost);
 			URL urlCon = new URL(url);
-			HttpURLConnection connection = (HttpURLConnection) urlCon.openConnection();
-			connection.setRequestMethod("GET");
+			HttpsURLConnection connection = (HttpsURLConnection) urlCon.openConnection();
+			connection.setRequestMethod("POST");
 			connection.setDoInput(true);
-			connection.setDoOutput(false);
+			connection.setDoOutput(true);
+			SSLContext sc = SSLContext.getInstance("SSL");
+			sc.init(null, trustAllCerts(), new java.security.SecureRandom());
+			connection.setSSLSocketFactory(sc.getSocketFactory());
+			connection.setHostnameVerifier((s, sslSession) -> true);
 			connection.connect();
+
+			OutputStream out = connection.getOutputStream();
+			byte[] bytes = parametros.getBytes("UTF8");
+			out.write(bytes);
+			out.flush();
+			out.close();
 
 			bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 			StringBuffer stringBuffer = new StringBuffer("");
@@ -106,9 +126,40 @@ public class GetBDGenerico extends AsyncTask<String, Void, String> {
 			Log.i("ECM", "Erro2 = " + e);
 			AtualDadosServ.getInstance().encerrar();
 		}
-		
 
-		
     }
+
+	public void setParametrosPost(Map<String, Object> parametrosPost) {
+		this.parametrosPost = parametrosPost;
+	}
+
+	private String getQueryString(Map<String, Object> params){
+		if (params == null || params.size() == 0) {
+			return null;
+		}
+		String urlParams = null;
+		Iterator<String> e = params.keySet().iterator();
+		while (e.hasNext()) {
+			String chave = e.next();
+			Object objValor = params.get(chave);
+			String valor = objValor.toString();
+			urlParams = urlParams == null ? "" : urlParams + "&";
+			urlParams += chave + "=" + valor;
+		}
+		return urlParams;
+	}
+
+	public TrustManager[] trustAllCerts(){
+		return new TrustManager[]{
+				new X509TrustManager() {
+					public java.security.cert.X509Certificate[] getAcceptedIssuers()
+					{
+						return null;
+					}
+					public void checkClientTrusted(java.security.cert.X509Certificate[] certs, String authType) {}
+					public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType) {}
+				}
+		};
+	}
 
 }

@@ -47,22 +47,16 @@ public class DescricaoQuestaoActivity extends ActivityGeneric {
 
         textViewDescQuestao.setText(questao);
 
-        buttonEditarDescrQuestao.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent it = new Intent( DescricaoQuestaoActivity.this, QuestaoActivity.class);
-                startActivity(it);
-                finish();
-            }
+        buttonEditarDescrQuestao.setOnClickListener(v -> {
+            Intent it = new Intent( DescricaoQuestaoActivity.this, QuestaoActivity.class);
+            startActivity(it);
+            finish();
         });
 
-        buttonCancDescrQuestao.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent it = new Intent(DescricaoQuestaoActivity.this, ListaQuestaoActivity.class);
-                startActivity(it);
-                finish();
-            }
+        buttonCancDescrQuestao.setOnClickListener(v -> {
+            Intent it = new Intent(DescricaoQuestaoActivity.this, ListaQuestaoActivity.class);
+            startActivity(it);
+            finish();
         });
 
     }

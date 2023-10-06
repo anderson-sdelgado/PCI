@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -17,6 +18,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import br.com.usinasantafe.pci.control.CheckListCTR;
+import br.com.usinasantafe.pci.model.dao.ItemDAO;
 import br.com.usinasantafe.pci.view.MenuInicialActivity;
 import br.com.usinasantafe.pci.control.ConfigCTR;
 import br.com.usinasantafe.pci.model.dao.OSDAO;
@@ -36,15 +39,14 @@ public class VerifDadosServ {
     private ProgressDialog progressDialog;
     private Context telaAtual;
     private Class telaProx;
-    private boolean verTerm;
-    private String dado;
-    private String tipo;
+    private String dados;
+    private String classe;
     private PostVerGenerico postVerGenerico;
-    private AtualAplicBean atualAplicBean;
     private MenuInicialActivity menuInicialActivity;
+    public static int status;
 
     public VerifDadosServ() {
-        //genericRecordable = new GenericRecordable();
+        genericRecordable = new GenericRecordable();
     }
 
     public static VerifDadosServ getInstance() {
@@ -55,288 +57,93 @@ public class VerifDadosServ {
 
     public void manipularDadosHttp(String result) {
 
-        if (!result.equals("")) {
-            retornoVerifNormal(result);
-        }
-
-    }
-
-    public void retornoVerifNormal(String result) {
-
         try {
-
-            if(this.tipo.equals("OS")) {
-                OSDAO osDAO = new OSDAO();
-                osDAO.recDadosOS(result);
+            CheckListCTR checkListCTR = new CheckListCTR();
+            ConfigCTR configCTR = new ConfigCTR();
+            if(this.classe.equals("OS")) {
+                checkListCTR.receberVerifOS(result);
+            } else if(this.classe.equals("Item")) {
+                checkListCTR.receberVerifItem(result);
+            } else if(this.classe.equals("Token")) {
+                configCTR.recToken(result.trim(), this.telaAtual, this.telaProx, this.progressDialog);
             }
-            else if(this.tipo.equals("Item")) {
-
-                if (!result.contains("exceeded")) {
-
-                    JSONObject jObj = new JSONObject(result);
-                    JSONArray jsonArray = jObj.getJSONArray("dados");
-                    Class classe = Class.forName(urlsConexaoHttp.localPSTEstatica + "ItemBean");
-
-                    if (jsonArray.length() > 0) {
-
-                        genericRecordable = new GenericRecordable();
-                        genericRecordable.deleteAll(classe);
-
-                        for (int i = 0; i < jsonArray.length(); i++) {
-
-                            JSONObject objeto = jsonArray.getJSONObject(i);
-                            Gson gson = new Gson();
-                            genericRecordable.insert(gson.fromJson(objeto.toString(), classe), classe);
-
-                        }
-
-                        this.progressDialog.dismiss();
-                        Intent it = new Intent(telaAtual, telaProx);
-                        telaAtual.startActivity(it);
-
-                    } else {
-
-                        verTerm = true;
-                        this.progressDialog.dismiss();
-
-                        AlertDialog.Builder alerta = new AlertDialog.Builder(telaAtual);
-                        alerta.setTitle("ATENÇÃO");
-                        alerta.setMessage("NÃO EXISTE ITENS PARA ESSA O.S.! POR FAVOR, ENTRE EM CONTATO COM A AREA QUE CRIA O.S. PARA APONTAMENTO.");
-
-                        alerta.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        });
-                        alerta.show();
-
-                    }
-
-                }
-                else{
-
-                    verTerm = true;
-                    this.progressDialog.dismiss();
-
-                    AlertDialog.Builder alerta = new AlertDialog.Builder(telaAtual);
-                    alerta.setTitle("ATENÇÃO");
-                    alerta.setMessage("CONEXÃO ESTA MUITO LENTA! POR FAVOR, SELECIONE NOVAMENTE A O.S. NUM PONTO COM MAIS SINAL.");
-
-                    alerta.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
-                    });
-                    alerta.show();
-
-                }
-
-            }
-            else if(this.tipo.equals("Servico")) {
-
-                if (!result.contains("exceeded")) {
-
-                    JSONObject jObj = new JSONObject(result);
-                    JSONArray jsonArray = jObj.getJSONArray("dados");
-                    Class classe = Class.forName(urlsConexaoHttp.localPSTEstatica + "ServicoTO");
-
-                    if (jsonArray.length() > 0) {
-
-                        genericRecordable = new GenericRecordable();
-                        genericRecordable.deleteAll(classe);
-
-                        for (int i = 0; i < jsonArray.length(); i++) {
-
-                            JSONObject objeto = jsonArray.getJSONObject(i);
-                            Gson gson = new Gson();
-                            genericRecordable.insert(gson.fromJson(objeto.toString(), classe), classe);
-
-                        }
-
-                        this.progressDialog.dismiss();
-                        Intent it = new Intent(telaAtual, telaProx);
-                        telaAtual.startActivity(it);
-
-                    }
-
-                }
-                else{
-
-                    this.progressDialog.dismiss();
-                    Intent it = new Intent(telaAtual, telaProx);
-                    telaAtual.startActivity(it);
-
-                }
-
-            }
-            else if(this.tipo.equals("Atualiza")) {
-
-                String verAtualizacao = result.trim();
-
-                if(verAtualizacao.equals("S")){
-
-                    AtualizarAplicativo atualizarAplicativo = new AtualizarAplicativo();
-                    atualizarAplicativo.setContext(this.menuInicialActivity);
-                    atualizarAplicativo.execute();
-
-                }
-                else{
-
-                    this.progressDialog.dismiss();
-
-                }
-
-            }
-            else if(this.tipo.equals("Funcionario")) {
-
-                if (!result.contains("exceeded")) {
-
-                    JSONObject jObj = new JSONObject(result);
-                    JSONArray jsonArray = jObj.getJSONArray("dados");
-                    Class classe = Class.forName(urlsConexaoHttp.localPSTEstatica + "FuncTO");
-
-                    if (jsonArray.length() > 0) {
-
-                        genericRecordable = new GenericRecordable();
-                        genericRecordable.deleteAll(classe);
-
-                        for (int i = 0; i < jsonArray.length(); i++) {
-
-                            JSONObject objeto = jsonArray.getJSONObject(i);
-                            Gson gson = new Gson();
-                            genericRecordable.insert(gson.fromJson(objeto.toString(), classe), classe);
-
-                        }
-
-                        this.progressDialog.dismiss();
-
-                    }
-
-                }
-                else{
-
-                    this.progressDialog.dismiss();
-
-                }
-
-
-            }
-
         } catch (Exception e) {
             Log.i("PMM", "Erro Manip atualizar = " + e);
         }
 
     }
 
-    public void verDados(String dado, String tipo, Context telaAtual, Class telaProx, ProgressDialog progressDialog) {
 
-        verTerm = false;
+    public void verDados(String dados, String tipo, Context telaAtual, Class telaProx, ProgressDialog progressDialog) {
+
         urlsConexaoHttp = new UrlsConexaoHttp();
         this.telaAtual = telaAtual;
         this.telaProx = telaProx;
         this.progressDialog = progressDialog;
-        this.dado = dado;
-        this.tipo = tipo;
+        this.dados = dados;
+        this.classe = tipo;
 
-        envioDados();
+        envioVerif();
 
     }
 
-    public void verAtualAplic(String versaoAplic, MenuInicialActivity menuInicialActivity, ProgressDialog progressDialog) {
 
-        AtualAplicBean atualAplicBean = new AtualAplicBean();
-        ConfigCTR configCTR = new ConfigCTR();
-        atualAplicBean.setIdCelularAtual(configCTR.getConfig().getNumLinhaConfig());
-        atualAplicBean.setVersaoAtual(versaoAplic);
+    public void salvarToken(String dados, Context telaAtual, Class telaProx, ProgressDialog progressDialog) {
 
-        urlsConexaoHttp = new UrlsConexaoHttp();
+        this.urlsConexaoHttp = new UrlsConexaoHttp();
+        this.telaAtual = telaAtual;
+        this.telaProx = telaProx;
         this.progressDialog = progressDialog;
-        this.tipo = "Atualiza";
-        this.menuInicialActivity = menuInicialActivity;
+        this.dados = dados;
+        this.classe = "Token";
 
-        JsonArray jsonArray = new JsonArray();
+        envioVerif();
 
-        Gson gson = new Gson();
-        jsonArray.add(gson.toJsonTree(atualAplicBean, atualAplicBean.getClass()));
+    }
 
-        JsonObject json = new JsonObject();
-        json.add("dados", jsonArray);
+    public void envioVerif() {
 
-        Log.i("PMM", "LISTA = " + json);
+        status = 2;
+        this.urlsConexaoHttp = new UrlsConexaoHttp();
+        String[] url = {urlsConexaoHttp.urlVerifica(classe)};
+        Map<String, Object> parametrosPost = new HashMap<>();
+        parametrosPost.put("dado", this.dados);
 
-        String[] url = {urlsConexaoHttp.urlVerifica(tipo)};
-        Map<String, Object> parametrosPost = new HashMap<String, Object>();
-        parametrosPost.put("dado", json.toString());
-
-        postVerGenerico = new PostVerGenerico();
+        Log.i("PMM", "postVerGenerico.execute('" + urlsConexaoHttp.urlVerifica(classe) + "'); - Dados de Envio = " + this.dados);
+       postVerGenerico = new PostVerGenerico();
         postVerGenerico.setParametrosPost(parametrosPost);
         postVerGenerico.execute(url);
 
     }
 
-    public void envioDados() {
-
-        String[] url = {urlsConexaoHttp.urlVerifica(tipo)};
-        Map<String, Object> parametrosPost = new HashMap<String, Object>();
-        parametrosPost.put("dado", String.valueOf(dado));
-
-        Log.i("PMM", "VERIFICA = " + dado);
-
-        postVerGenerico = new PostVerGenerico();
-        postVerGenerico.setParametrosPost(parametrosPost);
-        postVerGenerico.execute(url);
-
+    public void cancel() {
+        status = 3;
+        if (postVerGenerico.getStatus() == AsyncTask.Status.RUNNING) {
+            postVerGenerico.cancel(true);
+        }
     }
 
-    public void pulaTelaComTerm(){
-        if(!verTerm){
+    public void pulaTela(){
+        if(status < 3){
+            status = 3;
             this.progressDialog.dismiss();
-            this.verTerm = true;
             Intent it = new Intent(telaAtual, telaProx);
             telaAtual.startActivity(it);
         }
     }
 
-    public void msgComTerm(String texto){
-        if(!verTerm){
+
+    public void msg(String texto){
+        if(status < 3){
+            status = 3;
             this.progressDialog.dismiss();
-            this.verTerm = true;
             AlertDialog.Builder alerta = new AlertDialog.Builder(telaAtual);
             alerta.setTitle("ATENÇÃO");
             alerta.setMessage(texto);
-            alerta.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                }
+            alerta.setPositiveButton("OK", (dialog, which) -> {
             });
             alerta.show();
         }
     }
 
-    public void pulaTelaComTermSemBarra(){
-        if(!verTerm){
-            this.verTerm = true;
-            Intent it = new Intent(telaAtual, telaProx);
-            telaAtual.startActivity(it);
-        }
-    }
-
-    public void pulaTelaDadosInfor(Class telaProx){
-        if(!verTerm){
-            this.progressDialog.dismiss();
-            this.verTerm = true;
-            Intent it = new Intent(telaAtual, telaProx);
-            telaAtual.startActivity(it);
-        }
-    }
-
-    public void setTelaAtual(Context telaAtual) {
-        this.telaAtual = telaAtual;
-    }
-
-    public void setProgressDialog(ProgressDialog progressDialog) {
-        this.progressDialog = progressDialog;
-    }
 }

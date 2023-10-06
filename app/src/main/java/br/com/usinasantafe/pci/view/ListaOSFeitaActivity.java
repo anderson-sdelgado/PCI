@@ -28,14 +28,10 @@ public class ListaOSFeitaActivity extends ActivityGeneric {
         AdapterList adapterList = new AdapterList(this, pciContext.getCheckListCTR().osFeitasList(pciContext.getIdFunc()));
         listViewOSFeita.setAdapter(adapterList);
 
-        buttonRetOSFeita.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent it = new Intent( ListaOSFeitaActivity.this, MenuInicialActivity.class);
-                startActivity(it);
-                finish();
-            }
+        buttonRetOSFeita.setOnClickListener(v -> {
+            Intent it = new Intent( ListaOSFeitaActivity.this, MenuInicialActivity.class);
+            startActivity(it);
+            finish();
         });
 
     }

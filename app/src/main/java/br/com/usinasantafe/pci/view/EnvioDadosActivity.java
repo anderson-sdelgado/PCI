@@ -41,51 +41,45 @@ public class EnvioDadosActivity extends ActivityGeneric {
             textViewEnvioDados.setText("CONTÉM " + qtde + " CHECKLIST(S) PARA SEREM(S) REENVIAD0(S).");
         }
 
-        buttonSimEnvioDados.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        buttonSimEnvioDados.setOnClickListener(v -> {
 
-                if(qtde > 0) {
+            if(qtde > 0) {
 
-                    ConexaoWeb conexaoWeb = new ConexaoWeb();
+                ConexaoWeb conexaoWeb = new ConexaoWeb();
 
-                    if (conexaoWeb.verificaConexao(EnvioDadosActivity.this)) {
+                if (conexaoWeb.verificaConexao(EnvioDadosActivity.this)) {
 
-                        progressBar = new ProgressDialog(v.getContext());
-                        progressBar.setCancelable(true);
-                        progressBar.setMessage("ENVIANDO DADOS...");
-                        progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        progressBar.show();
+                    progressBar = new ProgressDialog(v.getContext());
+                    progressBar.setCancelable(true);
+                    progressBar.setMessage("ENVIANDO DADOS...");
+                    progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    progressBar.show();
 
-                        EnvioDadosServ.getInstance().envioDadosPrinc(EnvioDadosActivity.this, EnvioDadosActivity.class, progressBar);
+                    EnvioDadosServ.getInstance().envioDadosPrinc(EnvioDadosActivity.this, EnvioDadosActivity.class, progressBar);
 
-                    } else {
+                } else {
 
-                        AlertDialog.Builder alerta = new AlertDialog.Builder(EnvioDadosActivity.this);
-                        alerta.setTitle("ATENÇÃO");
-                        alerta.setMessage("FALHA NA CONEXÃO DE DADOS. O CELULAR ESTA SEM SINAL. POR FAVOR, TENTE NOVAMENTE QUANDO O CELULAR ESTIVE COM SINAL.");
-                        alerta.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        });
+                    AlertDialog.Builder alerta = new AlertDialog.Builder(EnvioDadosActivity.this);
+                    alerta.setTitle("ATENÇÃO");
+                    alerta.setMessage("FALHA NA CONEXÃO DE DADOS. O CELULAR ESTA SEM SINAL. POR FAVOR, TENTE NOVAMENTE QUANDO O CELULAR ESTIVE COM SINAL.");
+                    alerta.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
 
-                        alerta.show();
-                    }
-
+                    alerta.show();
                 }
 
             }
+
         });
 
 
-        buttonNaoEnvioDados.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent it = new Intent(EnvioDadosActivity.this, MenuInicialActivity.class);
-                startActivity(it);
-                finish();
-            }
+        buttonNaoEnvioDados.setOnClickListener(v -> {
+            Intent it = new Intent(EnvioDadosActivity.this, MenuInicialActivity.class);
+            startActivity(it);
+            finish();
         });
 
     }

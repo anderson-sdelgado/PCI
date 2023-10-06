@@ -40,46 +40,29 @@ public class ListaOSActivity extends ActivityGeneric {
         AdapterListOS adapterListOS = new AdapterListOS(this, osCabList);
         listViewOS.setAdapter(adapterListOS);
 
-        listViewOS.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listViewOS.setOnItemClickListener((l, v, position, id) -> {
 
-            @Override
-            public void onItemClick(AdapterView<?> l, View v, int position,
-                                    long id) {
+            OSBean osBean = osCabList.get(position);
 
-                OSBean osBean = osCabList.get(position);
+            pciContext.getCheckListCTR().salvarAtualCabec(osBean);
 
-                pciContext.getCheckListCTR().salvarAtualCabec(osBean);
+            progressBar = new ProgressDialog(v.getContext());
+            progressBar.setCancelable(true);
+            progressBar.setMessage("Pequisando Item...");
+            progressBar.show();
 
-                progressBar = new ProgressDialog(v.getContext());
-                progressBar.setCancelable(true);
-                progressBar.setMessage("Pequisando Item...");
-                progressBar.show();
-
-                VerifDadosServ.getInstance().verDados(osBean.getIdOS().toString(), "Item"
-                        ,   ListaOSActivity.this, ListaPlantaActivity.class, progressBar);
-
-            }
+            pciContext.getCheckListCTR().verItem(osBean.getIdOS(), ListaOSActivity.this, ListaPlantaActivity.class, progressBar);
 
         });
 
-        buttonAtualOS.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                atualizarOS();
-            }
-        });
+        buttonAtualOS.setOnClickListener(v -> atualizarOS());
 
 
-        buttonRetOS.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent it = new Intent(ListaOSActivity.this, FuncionarioActivity.class);
-                startActivity(it);
-                finish();
-                osCabList.clear();
-            }
+        buttonRetOS.setOnClickListener(v -> {
+            Intent it = new Intent(ListaOSActivity.this, FuncionarioActivity.class);
+            startActivity(it);
+            finish();
+            osCabList.clear();
         });
 
     }

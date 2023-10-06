@@ -24,71 +24,55 @@ public class FuncVerOSActivity extends ActivityGeneric {
         Button buttonOkFuncionario = findViewById(R.id.buttonOkPadrao);
         Button buttonCancFuncionario = findViewById(R.id.buttonCancPadrao);
 
-        buttonOkFuncionario.setOnClickListener(new View.OnClickListener() {
+        buttonOkFuncionario.setOnClickListener(v -> {
 
-            @Override
-            public void onClick(View v) {
+            if(!editTextPadrao.getText().toString().equals("")) {
 
-                if(!editTextPadrao.getText().toString().equals("")) {
+                Long matricFunc = Long.parseLong(editTextPadrao.getText().toString());
 
-                    Long matricFunc = Long.parseLong(editTextPadrao.getText().toString());
+                if(pciContext.getCheckListCTR().verFunc(matricFunc)){
 
-                    if(pciContext.getCheckListCTR().verFunc(matricFunc)){
+                    if(pciContext.getCheckListCTR().verCabecFechado(pciContext.getCheckListCTR().getFunc(matricFunc).getIdFunc())){
 
-                        if(pciContext.getCheckListCTR().verCabecFechado(pciContext.getCheckListCTR().getFunc(matricFunc).getIdFunc())){
+                        pciContext.setIdFunc(pciContext.getCheckListCTR().getFunc(matricFunc).getIdFunc());
 
-                            pciContext.setIdFunc(pciContext.getCheckListCTR().getFunc(matricFunc).getIdFunc());
-
-                            Intent it = new Intent(FuncVerOSActivity.this, ListaOSFeitaActivity.class);
-                            startActivity(it);
-                            finish();
-
-                        }
-                        else{
-
-                            AlertDialog.Builder alerta = new AlertDialog.Builder(FuncVerOSActivity.this);
-                            alerta.setTitle("ATENÇÃO");
-                            alerta.setMessage("FUNCIONÁRIO SEM O.S. APONTADA NO DIA ATUAL");
-
-                            alerta.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                }
-                            });
-                            alerta.show();
-
-                        }
+                        Intent it = new Intent(FuncVerOSActivity.this, ListaOSFeitaActivity.class);
+                        startActivity(it);
+                        finish();
 
                     }
                     else{
 
                         AlertDialog.Builder alerta = new AlertDialog.Builder(FuncVerOSActivity.this);
                         alerta.setTitle("ATENÇÃO");
-                        alerta.setMessage("FUNCIONÁRIO INEXISTENTE!");
+                        alerta.setMessage("FUNCIONÁRIO SEM O.S. APONTADA NO DIA ATUAL");
 
-                        alerta.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
+                        alerta.setPositiveButton("OK", (dialog, which) -> {
                         });
                         alerta.show();
 
                     }
 
                 }
+                else{
+
+                    AlertDialog.Builder alerta = new AlertDialog.Builder(FuncVerOSActivity.this);
+                    alerta.setTitle("ATENÇÃO");
+                    alerta.setMessage("FUNCIONÁRIO INEXISTENTE!");
+
+                    alerta.setPositiveButton("OK", (dialog, which) -> {
+                    });
+                    alerta.show();
+
+                }
 
             }
+
         });
 
-        buttonCancFuncionario.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if (editTextPadrao.getText().toString().length() > 0) {
-                    editTextPadrao.setText(editTextPadrao.getText().toString().substring(0, editTextPadrao.getText().toString().length() - 1));
-                }
+        buttonCancFuncionario.setOnClickListener(v -> {
+            if (editTextPadrao.getText().toString().length() > 0) {
+                editTextPadrao.setText(editTextPadrao.getText().toString().substring(0, editTextPadrao.getText().toString().length() - 1));
             }
         });
 

@@ -24,7 +24,6 @@ public class AdapterListPlanta extends BaseAdapter {
 
     private ArrayList itens;
     private LayoutInflater layoutInflater;
-    private List resp;
 
     public AdapterListPlanta(Context context, ArrayList itens) {
         this.itens = itens;

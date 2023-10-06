@@ -19,18 +19,11 @@
         android:text="@string/texto_num_linha_config" />
 
     <EditText
-        android:id="@+id/editTextNLinhaConfig"
+        android:id="@+id/editTextNroAparelhoConfig"
         style="@style/EditView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="number" />
-
-    <Button
-        android:id="@+id/buttonAtualizarDados"
-        style="@style/BotaoAvulso"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/texto_atualizar_dados" />
 
     <LinearLayout
         android:id="@+id/rightRelativeLayout"
@@ -55,5 +48,12 @@
             android:text="@string/texto_padrao_salvar" />
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonAtualBDConfig"
+        style="@style/BotaoAvulso"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/texto_atualizar_dados" />
 
 </LinearLayout>

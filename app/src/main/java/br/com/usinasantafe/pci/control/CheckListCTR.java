@@ -3,6 +3,9 @@ package br.com.usinasantafe.pci.control;
 import android.app.ProgressDialog;
 import android.content.Context;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +17,7 @@ import br.com.usinasantafe.pci.model.bean.estatica.ServicoBean;
 import br.com.usinasantafe.pci.model.bean.variavel.CabecBean;
 import br.com.usinasantafe.pci.model.bean.variavel.PlantaCabecBean;
 import br.com.usinasantafe.pci.model.bean.variavel.RespItemBean;
+import br.com.usinasantafe.pci.model.dao.AtualAplicDAO;
 import br.com.usinasantafe.pci.model.dao.CabecDAO;
 import br.com.usinasantafe.pci.model.dao.ComponenteDAO;
 import br.com.usinasantafe.pci.model.dao.FuncDAO;
@@ -24,6 +28,8 @@ import br.com.usinasantafe.pci.model.dao.PlantaDAO;
 import br.com.usinasantafe.pci.model.dao.RespItemDAO;
 import br.com.usinasantafe.pci.model.dao.ServicoDAO;
 import br.com.usinasantafe.pci.util.AtualDadosServ;
+import br.com.usinasantafe.pci.util.Json;
+import br.com.usinasantafe.pci.util.VerifDadosServ;
 
 public class CheckListCTR {
 
@@ -198,15 +204,6 @@ public class CheckListCTR {
         return funcDAO.verMatricFunc(matricFunc);
     }
 
-    public boolean verPlanta(){
-        OSDAO osDAO = new OSDAO();
-        PlantaDAO plantaDAO = new PlantaDAO();
-        ArrayList<Long> idPlantaList = osDAO.idPlantaOSList();
-        boolean ret = plantaDAO.verPlanta(idPlantaList);
-        idPlantaList.clear();
-        return ret;
-    }
-
     public boolean verPlantaEnvio(){
         CabecDAO cabecDAO = new CabecDAO();
         PlantaCabecDAO plantaCabecDAO = new PlantaCabecDAO();
@@ -256,10 +253,6 @@ public class CheckListCTR {
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
     ////////////////////////////// GET CAMPOS /////////////////////////////////////
-
-    public CabecBean getCabecBean() {
-        return cabecBean;
-    }
 
     public ItemBean getItemBean() {
         return itemBean;
@@ -414,10 +407,6 @@ public class CheckListCTR {
         this.cabecBean.setIdOficSecaoCabec(getFunc(matricFunc).getIdOficSecaoFunc());
     }
 
-    public void setCabecBean(CabecBean cabecBean) {
-        this.cabecBean = cabecBean;
-    }
-
     public void setItemBean(ItemBean itemBean) {
         this.itemBean = itemBean;
     }
@@ -428,7 +417,14 @@ public class CheckListCTR {
 
     public void verOS(Context telaAtual, Class telaProx, ProgressDialog progressDialog){
         OSDAO osDAO = new OSDAO();
-        osDAO.verOS(this.cabecBean.getIdOficSecaoCabec().toString(), telaAtual, telaProx, progressDialog);
+        AtualAplicDAO atualAplicDAO = new AtualAplicDAO();
+        osDAO.verOS(atualAplicDAO.getAtualIdOficSecao(this.cabecBean.getIdOficSecaoCabec()), telaAtual, telaProx, progressDialog);
+    }
+
+    public void verItem(Long idOS, Context telaAtual, Class telaProx, ProgressDialog progressDialog){
+        ItemDAO itemDAO = new ItemDAO();
+        AtualAplicDAO atualAplicDAO = new AtualAplicDAO();
+        itemDAO.verItem(atualAplicDAO.getAtualIdOS(idOS), telaAtual, telaProx, progressDialog);
     }
 
     public void atualDadosFunc(Context telaAtual, Class telaProx, ProgressDialog progressDialog){
@@ -443,12 +439,63 @@ public class CheckListCTR {
         AtualDadosServ.getInstance().atualGenericoBD(telaAtual, telaProx, progressDialog, operadorArrayList);
     }
 
-
     public void atualDadosServico(Context telaAtual, Class telaProx, ProgressDialog progressDialog){
         ArrayList operadorArrayList = new ArrayList();
         operadorArrayList.add("ServicoBean");
         AtualDadosServ.getInstance().atualGenericoBD(telaAtual, telaProx, progressDialog, operadorArrayList);
     }
+
+    public void receberVerifItem(String result){
+
+        try {
+
+            if (!result.contains("exceeded")) {
+
+                Json json = new Json();
+
+                ItemDAO itemDAO = new ItemDAO();
+                itemDAO.recDadosItem(json.jsonArray(result.trim()));
+
+                VerifDadosServ.getInstance().pulaTela();
+
+            } else {
+                VerifDadosServ.getInstance().msg("EXCEDEU TEMPO LIMITE DE PESQUISA! POR FAVOR, PROCURE UM PONTO MELHOR DE CONEXÃO DOS DADOS.");
+            }
+        } catch (Exception e) {
+            VerifDadosServ.getInstance().msg("FALHA DE PESQUISA DE ATIVIDADE! POR FAVOR, TENTAR NOVAMENTE COM UM SINAL MELHOR.");
+        }
+    }
+
+    public void receberVerifOS(String result){
+
+        try {
+
+            if (!result.contains("exceeded")) {
+
+                JSONObject jObj = new JSONObject(result);
+                JSONArray jsonArray = jObj.getJSONArray("dados");
+
+                if (jsonArray.length() > 0) {
+
+                    OSDAO osDAO = new OSDAO();
+                    osDAO.recDadosOS(jsonArray);
+
+                    VerifDadosServ.getInstance().pulaTela();
+
+                } else {
+                    VerifDadosServ.getInstance().msg("NÃO EXISTE O.S. PARA ESSE COLABORADOR! POR FAVOR, ENTRE EM CONTATO COM A AREA QUE CRIA O.S. PARA APONTAMENTO.");
+                }
+
+            }
+            else{
+                VerifDadosServ.getInstance().msg("EXCEDEU TEMPO LIMITE DE PESQUISA! POR FAVOR, PROCURE UM PONTO MELHOR DE CONEXÃO DOS DADOS.");
+            }
+
+        } catch (Exception e) {
+            VerifDadosServ.getInstance().msg("FALHA DE PESQUISA DE OS! POR FAVOR, TENTAR NOVAMENTE COM UM SINAL MELHOR.");
+        }
+    }
+
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
 

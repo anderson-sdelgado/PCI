@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -28,7 +29,6 @@ import br.com.usinasantafe.pci.util.ConexaoWeb;
 
 public class MenuInicialActivity extends ActivityGeneric {
 
-    private ProgressDialog progressBar;
     private PCIContext pciContext;
     private TextView textViewProcesso;
 
@@ -45,35 +45,13 @@ public class MenuInicialActivity extends ActivityGeneric {
 
         if(!checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
             String[] PERMISSIONS = {android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
-            ActivityCompat.requestPermissions((Activity) this, PERMISSIONS, 112);
+            ActivityCompat.requestPermissions(this, PERMISSIONS, 112);
         }
 
         startTimer();
-
-        ConexaoWeb conexaoWeb = new ConexaoWeb();
-
-        if(conexaoWeb.verificaConexao(this))
-        {
-            progressBar = new ProgressDialog(this);
-            if(pciContext.getConfigCTR().hasElements()){
-                progressBar.setCancelable(true);
-                progressBar.setMessage("Buscando Atualização...");
-                progressBar.show();
-                pciContext.getConfigCTR().verAtualAplic(pciContext.versaoApp, this, progressBar);
-            }
-            else{
-                progressBar.dismiss();
-            }
-
-        }
-
-        pciContext.getCheckListCTR().deleteOS();
-        pciContext.getCheckListCTR().deleteCabecResp();
-        pciContext.getCheckListCTR().updStatusApont();
-
         verifEnvio();
 
-        ArrayList<String> itens = new ArrayList<String>();
+        ArrayList<String> itens = new ArrayList<>();
         itens.add("CHECKLIST");
         itens.add("REENVIO DE DADOS");
         itens.add("CONFIGURAÇÃO");
@@ -81,50 +59,49 @@ public class MenuInicialActivity extends ActivityGeneric {
         itens.add("SAIR");
 
         AdapterList adapterList = new AdapterList(this, itens);
-        ListView listView = (ListView) findViewById(R.id.listaMenuInicial);
+        ListView listView = findViewById(R.id.listaMenuInicial);
         listView.setAdapter(adapterList);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener((l, v, position, id) -> {
 
-            @Override
-            public void onItemClick(AdapterView<?> l, View v, int position,
-                                    long id) {
+            TextView textView = v.findViewById(R.id.textViewItemList);
+            String text = textView.getText().toString();
 
-                if (position == 0) {
-
-                    if(pciContext.getCheckListCTR().hasElementFunc()) {
-                        Intent it = new Intent(MenuInicialActivity.this, FuncionarioActivity.class);
+            Intent it;
+            switch (text) {
+                case "CHECKLIST": {
+                    if (pciContext.getCheckListCTR().hasElementFunc()) {
+                        it = new Intent(MenuInicialActivity.this, FuncionarioActivity.class);
                         startActivity(it);
                         finish();
                     }
-
-                } else if (position == 1) {
-
-                    Intent it = new Intent(MenuInicialActivity.this, EnvioDadosActivity.class);
+                    break;
+                }
+                case "REENVIO DE DADOS": {
+                    it = new Intent(MenuInicialActivity.this, EnvioDadosActivity.class);
                     startActivity(it);
                     finish();
-
-                } else if (position == 2) {
-
-                    Intent it = new Intent(MenuInicialActivity.this, ConfigActivity.class);
+                    break;
+                }
+                case "CONFIGURAÇÃO": {
+                    it = new Intent(MenuInicialActivity.this, ConfigActivity.class);
                     startActivity(it);
                     finish();
-
-                } else if (position == 3) {
-
-                    Intent it = new Intent(MenuInicialActivity.this, FuncVerOSActivity.class);
+                    break;
+                }
+                case "RELAÇÃO DE OS": {
+                    it = new Intent(MenuInicialActivity.this, FuncVerOSActivity.class);
                     startActivity(it);
                     finish();
-
-                } else if (position == 4) {
-
+                    break;
+                }
+                case "SAIR": {
                     Intent intent = new Intent(Intent.ACTION_MAIN);
                     intent.addCategory(Intent.CATEGORY_HOME);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
-
+                    break;
                 }
-
             }
 
         });
@@ -164,8 +141,7 @@ public class MenuInicialActivity extends ActivityGeneric {
         if (pciContext.getCheckListCTR().verDadosEnvio()) {
             textViewProcesso.setTextColor(Color.RED);
             textViewProcesso.setText("Existem Dados para serem Enviados");
-        }
-        else{
+        } else {
             textViewProcesso.setTextColor(Color.GREEN);
             textViewProcesso.setText("Todos os Dados já foram Enviados");
         }

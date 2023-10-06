@@ -20,8 +20,6 @@ public class PostVerGenerico extends AsyncTask<String, Void, String> {
 
     private static PostCadGenerico instance = null;
     private Map<String, Object> parametrosPost = null;
-    private VerifDadosServ verifDadosServ;
-//    private String tipo;
 
     public PostVerGenerico() {
     }
@@ -91,7 +89,7 @@ public class PostVerGenerico extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String result) {
 
         try {
-            Log.i("ECM", "VALOR RECEBIDO --> " + result);
+            Log.i("PCI", "VALOR RECEBIDO --> " + result);
             VerifDadosServ.getInstance().manipularDadosHttp(result);
         } catch (Exception e) {
             Log.i("ERRO", "Erro2 = " + e);
@@ -103,14 +101,14 @@ public class PostVerGenerico extends AsyncTask<String, Void, String> {
         this.parametrosPost = parametrosPost;
     }
 
-    private String getQueryString(Map<String, Object> params) throws Exception {
+    private String getQueryString(Map<String, Object> params) {
         if (params == null || params.size() == 0) {
             return null;
         }
         String urlParams = null;
-        Iterator<String> e = (Iterator<String>) params.keySet().iterator();
+        Iterator<String> e = params.keySet().iterator();
         while (e.hasNext()) {
-            String chave = (String) e.next();
+            String chave = e.next();
             Object objValor = params.get(chave);
             String valor = objValor.toString();
             urlParams = urlParams == null ? "" : urlParams + "&";

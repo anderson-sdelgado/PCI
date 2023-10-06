@@ -70,40 +70,30 @@ public class ListaQuestaoActivity extends ActivityGeneric {
         AdapterListQuestao adapterListQuestao = new AdapterListQuestao(this, itemArrayList);
         listViewQuestao.setAdapter(adapterListQuestao);
 
-        listViewQuestao.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listViewQuestao.setOnItemClickListener((l, v, position, id) -> {
 
-            @Override
-            public void onItemClick(AdapterView<?> l, View v, int position,
-                                    long id) {
+            pciContext.getCheckListCTR().setItemBean(itemArrayList.get(position));
 
-                pciContext.getCheckListCTR().setItemBean((ItemBean) itemArrayList.get(position));
-
-                if(pciContext.getCheckListCTR().verRespItem()){
-                    Intent it = new Intent(ListaQuestaoActivity.this, QuestaoActivity.class);
-                    startActivity(it);
-                    finish();
-                }
-                else{
-                    Intent it = new Intent(ListaQuestaoActivity.this, DescricaoQuestaoActivity.class);
-                    startActivity(it);
-                    finish();
-                }
-
-
+            if(pciContext.getCheckListCTR().verRespItem()){
+                Intent it = new Intent(ListaQuestaoActivity.this, QuestaoActivity.class);
+                startActivity(it);
+                finish();
             }
+            else{
+                Intent it = new Intent(ListaQuestaoActivity.this, DescricaoQuestaoActivity.class);
+                startActivity(it);
+                finish();
+            }
+
 
         });
 
-        buttonRetQuestao.setOnClickListener(new View.OnClickListener() {
+        buttonRetQuestao.setOnClickListener(v -> {
 
-            @Override
-            public void onClick(View v) {
+            Intent it = new Intent(ListaQuestaoActivity.this, ListaPlantaActivity.class);
+            startActivity(it);
+            finish();
 
-                Intent it = new Intent(ListaQuestaoActivity.this, ListaPlantaActivity.class);
-                startActivity(it);
-                finish();
-
-            }
         });
 
     }
