@@ -58,8 +58,7 @@ public class ConfigActivity extends ActivityGeneric {
                     alerta.setTitle("ATENÇÃO");
                     alerta.setMessage("FALHA NA CONEXÃO DE DADOS. O CELULAR ESTA SEM SINAL. POR FAVOR, TENTE NOVAMENTE QUANDO O CELULAR ESTIVE COM SINAL.");
 
-                    alerta.setPositiveButton("OK", (dialog, which) -> {
-                    });
+                    alerta.setPositiveButton("OK", (dialog, which) -> {});
                     alerta.show();
 
                 }
@@ -69,8 +68,7 @@ public class ConfigActivity extends ActivityGeneric {
                 AlertDialog.Builder alerta = new AlertDialog.Builder(ConfigActivity.this);
                 alerta.setTitle("ATENÇÃO");
                 alerta.setMessage("POR FAVOR, INSIRA O EQUIPAMENTO ANTES DE ATUALIZAR OS DADDOS.");
-                alerta.setPositiveButton("OK", (dialog, which) -> {
-                });
+                alerta.setPositiveButton("OK", (dialog, which) -> {});
                 alerta.show();
             }
 
@@ -91,8 +89,7 @@ public class ConfigActivity extends ActivityGeneric {
                 AlertDialog.Builder alerta = new AlertDialog.Builder(ConfigActivity.this);
                 alerta.setTitle("ATENÇÃO");
                 alerta.setMessage("POR FAVOR! DIGITE O NUMERO DA LINHA.");
-                alerta.setPositiveButton("OK", (dialog, which) -> {
-                });
+                alerta.setPositiveButton("OK", (dialog, which) -> {});
                 alerta.show();
 
             }
@@ -100,7 +97,7 @@ public class ConfigActivity extends ActivityGeneric {
         });
 
         buttonCancConfig.setOnClickListener(v -> {
-            Intent it = new Intent(ConfigActivity.this, MenuInicialActivity.class);
+            Intent it = new Intent(ConfigActivity.this, TelaInicialActivity.class);
             startActivity(it);
             finish();
         });

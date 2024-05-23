@@ -16,8 +16,7 @@ public class PCIContext extends Application {
     private CheckListCTR checkListCTR;
     private Long idFunc;
 
-    public static String versaoApp = "2.02";
-    public static String versaoWS = "2.00";
+    public static String versaoWS = "2.01";
 
     public PCIContext() {
     }

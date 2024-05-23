@@ -50,7 +50,7 @@
     <string name="texto_status_questao">CONFORME</string>
     <string name="texto_titulo_os">ORDEM DE SERVIÇO</string>
     <string name="texto_descr_questao">VERIFICAR PARTE ESQUERDA</string>
-    <string name="texto_num_linha_config">NUM. LINHA:</string>
+    <string name="texto_nro_aparelho_config">NRO APARELHO:</string>
     <string name="texto_padrao_salvar">SALVAR</string>
     <string name="texto_atualizar_bd">ATUALIZAR DADOS</string>
     <string name="texto_periodo_os">DIÁRIA</string>

@@ -26,6 +26,7 @@ public class CabecDAO {
     }
 
     public void updStatusFechado(CabecBean cabecBean){
+        cabecBean.setStatusApontCabec(0L);
         cabecBean.setStatusCabec(2L);
         cabecBean.update();
     }
@@ -36,6 +37,7 @@ public class CabecDAO {
         CabecBean cabecBean = cabecList.get(0);
         cabecList.clear();
 
+        cabecBean.setStatusApontCabec(0L);
         cabecBean.setStatusCabec(2L);
         cabecBean.update();
 
@@ -206,7 +208,7 @@ public class CabecDAO {
     private EspecificaPesquisa getPesqCabecFechado(){
         EspecificaPesquisa pesquisa = new EspecificaPesquisa();
         pesquisa.setCampo("statusCabec");
-        pesquisa.setValor(1L);
+        pesquisa.setValor(2L);
         pesquisa.setTipo(1);
         return pesquisa;
     }

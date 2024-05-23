@@ -12,11 +12,11 @@
     tools:context=".view.ConfigActivity">
 
     <TextView
-        android:id="@+id/textViewNLinhaConfig"
+        android:id="@+id/textViewNroAparelhoConfig"
         style="@style/TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/texto_num_linha_config" />
+        android:text="@string/texto_nro_aparelho_config" />
 
     <EditText
         android:id="@+id/editTextNroAparelhoConfig"

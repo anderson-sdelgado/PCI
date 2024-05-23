@@ -28,7 +28,6 @@ public class PostBDGenerico extends AsyncTask<String, Void, String> {
 	
 	private UrlsConexaoHttp urlsConexaoHttp;
 
-
 	public PostBDGenerico() {
 		urlsConexaoHttp = new UrlsConexaoHttp();
 	}
@@ -38,7 +37,6 @@ public class PostBDGenerico extends AsyncTask<String, Void, String> {
         instance = new PostBDGenerico();
         return instance;
     }
-
 
 	@Override
 	protected String doInBackground(String... arg) {

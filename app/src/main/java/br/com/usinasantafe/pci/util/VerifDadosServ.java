@@ -3,30 +3,18 @@ package br.com.usinasantafe.pci.util;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import br.com.usinasantafe.pci.control.CheckListCTR;
-import br.com.usinasantafe.pci.model.dao.ItemDAO;
-import br.com.usinasantafe.pci.view.MenuInicialActivity;
 import br.com.usinasantafe.pci.control.ConfigCTR;
-import br.com.usinasantafe.pci.model.dao.OSDAO;
 import br.com.usinasantafe.pci.util.conHttp.PostVerGenerico;
 import br.com.usinasantafe.pci.util.conHttp.UrlsConexaoHttp;
 import br.com.usinasantafe.pci.model.pst.GenericRecordable;
-import br.com.usinasantafe.pci.model.bean.AtualAplicBean;
 
 /**
  * Created by anderson on 16/11/2015.
@@ -42,7 +30,6 @@ public class VerifDadosServ {
     private String dados;
     private String classe;
     private PostVerGenerico postVerGenerico;
-    private MenuInicialActivity menuInicialActivity;
     public static int status;
 
     public VerifDadosServ() {
@@ -87,7 +74,6 @@ public class VerifDadosServ {
 
     }
 
-
     public void salvarToken(String dados, Context telaAtual, Class telaProx, ProgressDialog progressDialog) {
 
         this.urlsConexaoHttp = new UrlsConexaoHttp();
@@ -114,13 +100,6 @@ public class VerifDadosServ {
         postVerGenerico.setParametrosPost(parametrosPost);
         postVerGenerico.execute(url);
 
-    }
-
-    public void cancel() {
-        status = 3;
-        if (postVerGenerico.getStatus() == AsyncTask.Status.RUNNING) {
-            postVerGenerico.cancel(true);
-        }
     }
 
     public void pulaTela(){

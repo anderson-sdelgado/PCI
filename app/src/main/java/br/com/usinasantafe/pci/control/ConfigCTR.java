@@ -19,8 +19,7 @@ public class ConfigCTR {
     public ConfigCTR() {
     }
 
-
-    /////////////////////////////MANIPULAR CONFIC///////////////////////////////////////////
+    /////////////////////////////MANIPULAR CONFIG///////////////////////////////////////////
 
     public void salvarConfig(Long numLinha){
         ConfigDAO configDAO = new ConfigDAO();
@@ -68,8 +67,8 @@ public class ConfigCTR {
             JSONArray jsonArray = jObj.getJSONArray("dados");
 
             if (jsonArray.length() > 0) {
-                ConfigDAO configDAO = new ConfigDAO();
-                atualAplicBean = configDAO.recAparelho(jsonArray);
+                AtualAplicDAO atualAplicDAO = new AtualAplicDAO();
+                atualAplicBean = atualAplicDAO.recAparelho(jsonArray);
             }
 
             salvarConfig(atualAplicBean.getNroAparelho());

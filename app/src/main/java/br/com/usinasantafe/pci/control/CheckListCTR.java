@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import br.com.usinasantafe.pci.model.bean.estatica.ComponenteBean;
 import br.com.usinasantafe.pci.model.bean.estatica.FuncBean;
@@ -28,6 +29,7 @@ import br.com.usinasantafe.pci.model.dao.PlantaDAO;
 import br.com.usinasantafe.pci.model.dao.RespItemDAO;
 import br.com.usinasantafe.pci.model.dao.ServicoDAO;
 import br.com.usinasantafe.pci.util.AtualDadosServ;
+import br.com.usinasantafe.pci.util.EnvioDadosServ;
 import br.com.usinasantafe.pci.util.Json;
 import br.com.usinasantafe.pci.util.VerifDadosServ;
 
@@ -313,13 +315,15 @@ public class CheckListCTR {
         for(OSBean osBean : osList){
             boolean verOS = true;
             for (Long qtdeDias : qtdeDiasList) {
-                if(osBean.getQtdeDiaOS() == qtdeDias){
+                if (Objects.equals(osBean.getQtdeDiaOS(), qtdeDias)) {
                     verOS = false;
+                    break;
                 }
             }
             for (CabecBean cabecBean : cabecFechadoList) {
-                if(osBean.getIdOS() == cabecBean.getIdOSCabec()){
+                if (Objects.equals(osBean.getIdOS(), cabecBean.getIdOSCabec())) {
                     verOS = false;
+                    break;
                 }
             }
             if(verOS){
@@ -531,9 +535,8 @@ public class CheckListCTR {
 
     public void recDados(String retorno){
 
-        try{
+        try {
 
-            int pos1 = retorno.indexOf("_") + 1;
             int pos2 = retorno.indexOf("#") + 1;
 
             String objSeg = retorno.substring(pos2);
@@ -541,9 +544,8 @@ public class CheckListCTR {
             PlantaCabecDAO plantaCabecDAO = new PlantaCabecDAO();
             plantaCabecDAO.updPlantaEnviada(objSeg);
 
-
-        }
-        catch(Exception e){
+        } catch(Exception e){
+            EnvioDadosServ.getInstance().falhaEnvio();
         }
 
     }

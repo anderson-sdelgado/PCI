@@ -76,13 +76,10 @@ public class EnvioDadosServ {
 
 		AlertDialog.Builder alerta = new AlertDialog.Builder(this.telaAtual);
 		alerta.setTitle("ATENCAO");
-		alerta.setMessage("ENVIADO DADOS COM SUCESSO.");
-		alerta.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				Intent it = new Intent(telaAtual, telaProx);
-				telaAtual.startActivity(it);
-			}
+		alerta.setMessage("DADOS ENVIADO COM SUCESSO.");
+		alerta.setPositiveButton("OK", (dialog, which) -> {
+			Intent it = new Intent(telaAtual, telaProx);
+			telaAtual.startActivity(it);
 		});
 
 		alerta.show();
@@ -94,12 +91,9 @@ public class EnvioDadosServ {
 		AlertDialog.Builder alerta = new AlertDialog.Builder(this.telaAtual);
 		alerta.setTitle("ATENCAO");
 		alerta.setMessage("FALHA NO ENVIO DE DADOS! POR FAVOR, TENTE REENVIAR NOVAMENTE OS DADOS.");
-		alerta.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				Intent it = new Intent(telaAtual, telaProx);
-				telaAtual.startActivity(it);
-			}
+		alerta.setPositiveButton("OK", (dialog, which) -> {
+			Intent it = new Intent(telaAtual, telaProx);
+			telaAtual.startActivity(it);
 		});
 
 		alerta.show();

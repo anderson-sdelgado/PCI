@@ -1,31 +1,16 @@
 package br.com.usinasantafe.pci.view;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-import android.Manifest;
-import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.AlertDialog;
-import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import br.com.usinasantafe.pci.BuildConfig;
 import br.com.usinasantafe.pci.PCIContext;
 import br.com.usinasantafe.pci.R;
-import br.com.usinasantafe.pci.ReceberAlarme;
-import br.com.usinasantafe.pci.util.ConexaoWeb;
 
 public class MenuInicialActivity extends ActivityGeneric {
 
@@ -43,12 +28,6 @@ public class MenuInicialActivity extends ActivityGeneric {
 
         textViewPrincipal.setText("PRINCIPAL - V " + BuildConfig.VERSION_NAME);
 
-        if(!checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
-            String[] PERMISSIONS = {android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
-            ActivityCompat.requestPermissions(this, PERMISSIONS, 112);
-        }
-
-        startTimer();
         verifEnvio();
 
         ArrayList<String> itens = new ArrayList<>();
@@ -108,33 +87,7 @@ public class MenuInicialActivity extends ActivityGeneric {
 
     }
 
-    public boolean checkPermission(String permission){
-        int check = ContextCompat.checkSelfPermission(this, permission);
-        return (check == PackageManager.PERMISSION_GRANTED);
-    }
-
     public void onBackPressed()  {
-    }
-
-    public void startTimer() {
-
-        Intent intent = new Intent(this, ReceberAlarme.class);
-
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0,
-                intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(System.currentTimeMillis());
-        c.add(Calendar.SECOND, 1);
-
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-
-        if (pendingIntent != null && alarmManager != null) {
-            alarmManager.cancel(pendingIntent);
-        }
-
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), 60000, pendingIntent);
-
     }
 
     public void verifEnvio(){
