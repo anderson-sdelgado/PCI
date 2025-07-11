@@ -18,6 +18,7 @@ import br.com.usinasantafe.pci.R;
 import br.com.usinasantafe.pci.model.bean.estatica.FuncBean;
 import br.com.usinasantafe.pci.model.bean.estatica.OSBean;
 import br.com.usinasantafe.pci.model.bean.variavel.PlantaCabecBean;
+import br.com.usinasantafe.pci.util.ConexaoWeb;
 import br.com.usinasantafe.pci.util.EnvioDadosServ;
 import br.com.usinasantafe.pci.util.VerifDadosServ;
 
@@ -120,12 +121,45 @@ public class ListaPlantaActivity extends ActivityGeneric {
 
         buttonAtualPlanta.setOnClickListener(v -> {
 
-            progressBar = new ProgressDialog(v.getContext());
-            progressBar.setCancelable(true);
-            progressBar.setMessage("Pequisando Item...");
-            progressBar.show();
+            AlertDialog.Builder alerta = new AlertDialog.Builder(ListaPlantaActivity.this);
+            alerta.setTitle("ATENÇÃO");
+            alerta.setMessage("DESEJA REALMENTE ATUALIZAR BASE DE DADOS?");
+            alerta.setNegativeButton("SIM", (dialog, which) -> {
 
-            pciContext.getCheckListCTR().verItem(pciContext.getCheckListCTR().getOS().getIdOS(), ListaPlantaActivity.this, ListaPlantaActivity.class, progressBar);
+                ConexaoWeb conexaoWeb = new ConexaoWeb();
+
+                if (conexaoWeb.verificaConexao(ListaPlantaActivity.this)) {
+
+                    progressBar = new ProgressDialog(ListaPlantaActivity.this);
+                    progressBar.setCancelable(true);
+                    progressBar.setMessage("Atualizando Planta...");
+                    progressBar.show();
+
+                    pciContext.getCheckListCTR().atualDadosItem(ListaPlantaActivity.this, ListaOSActivity.class, progressBar);
+
+                } else {
+
+                    AlertDialog.Builder alerta1 = new AlertDialog.Builder( ListaPlantaActivity.this);
+                    alerta1.setTitle("ATENÇÃO");
+                    alerta1.setMessage("FALHA NA CONEXÃO DE DADOS. O CELULAR ESTA SEM SINAL. POR FAVOR, TENTE NOVAMENTE QUANDO O CELULAR ESTIVE COM SINAL.");
+                    alerta1.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+
+                    alerta1.show();
+
+                }
+
+
+            });
+
+            alerta.setPositiveButton("NÃO", (dialog, which) -> {
+            });
+
+            alerta.show();
 
         });
 

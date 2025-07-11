@@ -61,22 +61,22 @@ public class CheckListCTR {
         PlantaCabecDAO plantaCabecDAO = new PlantaCabecDAO();
         CabecDAO cabecDAO = new CabecDAO();
 
-        if(plantaCabecDAO.verPlantaCabec(cabecDAO.getCabecApont().getIdCabec())){
+        if(plantaCabecDAO.verPlantaCabec(cabecDAO.getCabecApont().getIdCabec())) {
             plantaCabecArrayList = plantaCabecDAO.plantaCabecSemEnvioArrayList(cabecDAO.getCabecApont().getIdCabec());
             ArrayList<Long> idPlantaOSArrayList = itemDAO.idPlantaArrayList(cabecDAO.getCabecApont().getIdOSCabec());
             for(Long idPlantaOS : idPlantaOSArrayList){
                 boolean verPlanta = true;
                 for(PlantaCabecBean plantaCabecBean : plantaCabecArrayList){
-                    if(idPlantaOS.equals(plantaCabecBean.getIdPlanta())){
+                    if (idPlantaOS.equals(plantaCabecBean.getIdPlanta())) {
                         verPlanta = false;
+                        break;
                     }
                 }
                 if(verPlanta){
                     plantaCabecArrayList.add(plantaCabecDAO.salvarPlantaCabec(idPlantaOS, cabecDAO.getCabecApont().getIdCabec()));
                 }
             }
-        }
-        else{
+        } else {
             ArrayList<Long> idPlantaOSArrayList = itemDAO.idPlantaArrayList(cabecDAO.getCabecApont().getIdOSCabec());
             for(Long idPlantaOS : idPlantaOSArrayList){
                 plantaCabecArrayList.add(plantaCabecDAO.salvarPlantaCabec(idPlantaOS, cabecDAO.getCabecApont().getIdCabec()));
@@ -434,6 +434,18 @@ public class CheckListCTR {
     public void atualDadosFunc(Context telaAtual, Class telaProx, ProgressDialog progressDialog){
         ArrayList operadorArrayList = new ArrayList();
         operadorArrayList.add("FuncBean");
+        AtualDadosServ.getInstance().atualGenericoBD(telaAtual, telaProx, progressDialog, operadorArrayList);
+    }
+
+    public void atualDadosOS(Context telaAtual, Class telaProx, ProgressDialog progressDialog){
+        ArrayList operadorArrayList = new ArrayList();
+        operadorArrayList.add("OSBean");
+        AtualDadosServ.getInstance().atualGenericoBD(telaAtual, telaProx, progressDialog, operadorArrayList);
+    }
+
+    public void atualDadosItem(Context telaAtual, Class telaProx, ProgressDialog progressDialog){
+        ArrayList operadorArrayList = new ArrayList();
+        operadorArrayList.add("ItemBean");
         AtualDadosServ.getInstance().atualGenericoBD(telaAtual, telaProx, progressDialog, operadorArrayList);
     }
 
