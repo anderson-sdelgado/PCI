@@ -1,5 +1,6 @@
 package br.com.usinasantafe.pci.view;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ public class MenuInicialActivity extends ActivityGeneric {
 
     private PCIContext pciContext;
     private TextView textViewProcesso;
+    private ProgressDialog progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,8 @@ public class MenuInicialActivity extends ActivityGeneric {
         textViewPrincipal.setText("PRINCIPAL - V " + BuildConfig.VERSION_NAME);
 
         verifEnvio();
+
+        atualDados();
 
         ArrayList<String> itens = new ArrayList<>();
         itens.add("CHECKLIST");
@@ -98,6 +102,21 @@ public class MenuInicialActivity extends ActivityGeneric {
             textViewProcesso.setTextColor(Color.GREEN);
             textViewProcesso.setText("Todos os Dados já foram Enviados");
         }
+    }
+
+    public void atualDados() {
+
+        if (pciContext.getCheckListCTR().hasElementFunc()) {
+
+            progressBar = new ProgressDialog(MenuInicialActivity.this);
+            progressBar.setCancelable(true);
+            progressBar.setMessage("Atualizando Inicial...");
+            progressBar.show();
+
+            pciContext.getCheckListCTR().atualDadosInicial(MenuInicialActivity.this, MenuInicialActivity.class, progressBar);
+
+        }
+
     }
 
 }

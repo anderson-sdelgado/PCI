@@ -96,7 +96,6 @@ public class ListaOSActivity extends ActivityGeneric {
 
             }
 
-
         });
 
         alerta.setPositiveButton("NÃO", (dialog, which) -> {

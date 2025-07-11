@@ -419,21 +419,18 @@ public class CheckListCTR {
 
     //////////////////////// VERIFICAÇÃO E ATUALIZAÇÃO DE DADOS POR SERVIDOR ///////////////////////
 
-    public void verOS(Context telaAtual, Class telaProx, ProgressDialog progressDialog){
-        OSDAO osDAO = new OSDAO();
-        AtualAplicDAO atualAplicDAO = new AtualAplicDAO();
-        osDAO.verOS(atualAplicDAO.getAtualIdOficSecao(this.cabecBean.getIdOficSecaoCabec()), telaAtual, telaProx, progressDialog);
-    }
-
-    public void verItem(Long idOS, Context telaAtual, Class telaProx, ProgressDialog progressDialog){
-        ItemDAO itemDAO = new ItemDAO();
-        AtualAplicDAO atualAplicDAO = new AtualAplicDAO();
-        itemDAO.verItem(atualAplicDAO.getAtualIdOS(idOS), telaAtual, telaProx, progressDialog);
-    }
-
     public void atualDadosFunc(Context telaAtual, Class telaProx, ProgressDialog progressDialog){
         ArrayList operadorArrayList = new ArrayList();
         operadorArrayList.add("FuncBean");
+        AtualDadosServ.getInstance().atualGenericoBD(telaAtual, telaProx, progressDialog, operadorArrayList);
+    }
+
+    public void atualDadosInicial(Context telaAtual, Class telaProx, ProgressDialog progressDialog){
+        ArrayList operadorArrayList = new ArrayList();
+        operadorArrayList.add("OSBean");
+        operadorArrayList.add("ItemBean");
+        operadorArrayList.add("PlantaBean");
+        operadorArrayList.add("ServicoBean");
         AtualDadosServ.getInstance().atualGenericoBD(telaAtual, telaProx, progressDialog, operadorArrayList);
     }
 
@@ -449,14 +446,9 @@ public class CheckListCTR {
         AtualDadosServ.getInstance().atualGenericoBD(telaAtual, telaProx, progressDialog, operadorArrayList);
     }
 
-    public void atualDadosPlanta(Context telaAtual, Class telaProx, ProgressDialog progressDialog){
+    public void atualDadosPlantaServico(Context telaAtual, Class telaProx, ProgressDialog progressDialog){
         ArrayList operadorArrayList = new ArrayList();
         operadorArrayList.add("PlantaBean");
-        AtualDadosServ.getInstance().atualGenericoBD(telaAtual, telaProx, progressDialog, operadorArrayList);
-    }
-
-    public void atualDadosServico(Context telaAtual, Class telaProx, ProgressDialog progressDialog){
-        ArrayList operadorArrayList = new ArrayList();
         operadorArrayList.add("ServicoBean");
         AtualDadosServ.getInstance().atualGenericoBD(telaAtual, telaProx, progressDialog, operadorArrayList);
     }

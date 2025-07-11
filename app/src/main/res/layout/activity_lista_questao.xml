@@ -39,4 +39,11 @@
         android:layout_height="wrap_content"
         android:text="@string/texto_retornar" />
 
+    <Button
+        android:id="@+id/buttonAtualQuestao"
+        style="@style/BotaoAvulso"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/texto_atualizar_dados" />
+
 </LinearLayout>
